@@ -1,6 +1,9 @@
 package com.example.cw.unforeseenstorm;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,11 +17,14 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
 
 public class ScrollingActivity extends AppCompatActivity {
 
+    String cityName;
 
+    SharedPreferences sharedPreferences;
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -33,8 +39,22 @@ public class ScrollingActivity extends AppCompatActivity {
                     //可在其中解析amapLocation获取相应内容。
                     double locationType = amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
                     double latitude = amapLocation.getLatitude();//获取纬度
-                    double jindu = amapLocation.getLongitude();//
-                    String cityName = amapLocation.getCity();;
+                    double jindu = amapLocation.getLongitude();
+                    //这里是异步获取城市名
+                    cityName = amapLocation.getCity();
+
+
+
+                    sharedPreferences = getSharedPreferences("LocationInfo",
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("city", cityName);
+//                    editor.putFloat("weidu", latitude);
+//                    editor.putFloat("jindu", jindu);
+
+                    GetRealWeather getRealWeather = new GetRealWeather(cityName, ScrollingActivity.this, weatherImageView, mCollapsingToolbarLayout);
+                    getRealWeather.getRealWeather();
+
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -44,6 +64,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
             }
         }
+
     };
 
     //声明AMapLocationClientOption对象
@@ -52,6 +73,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
     private ImageView weatherImageView;
+
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +88,7 @@ public class ScrollingActivity extends AppCompatActivity {
         SetBarColor.MakeBarTrans(ScrollingActivity.this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +121,6 @@ public class ScrollingActivity extends AppCompatActivity {
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
         mLocationClient.startLocation();
-
-
 
 
     }

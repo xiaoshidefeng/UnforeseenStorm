@@ -3,12 +3,16 @@ package com.example.cw.unforeseenstorm.NetWork;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.cw.unforeseenstorm.Bean.RealWeatherBean;
+import com.example.cw.unforeseenstorm.R;
 import com.example.cw.unforeseenstorm.Tool.ConstClass;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,10 +31,15 @@ public class GetRealWeather {
     private JSONArray jsonArray;
     private Context context;
     private RealWeatherBean realWeatherBean;
+    private ImageView imageView;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
-    public GetRealWeather(String city, Context context, RealWeatherBean realWeatherBean) {
+    public GetRealWeather(String city, Context context,
+                          ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout) {
         this.city = city;
         this.context = context;
+        this.imageView = imageView;
+        this.collapsingToolbarLayout = collapsingToolbarLayout;
     }
 
     public void handler(){
@@ -42,6 +51,13 @@ public class GetRealWeather {
 
             if(jsonArray != null){
 
+                Log.e("test", realWeatherBean.toString());
+                if(realWeatherBean.text.equals("晴")) {
+                    GetRealWeather.this.imageView.setImageResource(R.mipmap.img_sunny_day);
+                    collapsingToolbarLayout.setTitle("晴  " + realWeatherBean.tmp + "℃");
+
+
+                }
 
             }
 
@@ -56,8 +72,11 @@ public class GetRealWeather {
 
                 HttpURLConnection connection = null;
                 try {
-                    String s = ConstClass.API_REALTIME_WEATHER + city + ConstClass.API_KEY;
+                    String s = ConstClass.API_REALTIME_WEATHER + GetRealWeather.this.city + "&key=" + ConstClass.API_KEY;
                     URL url = new URL(s);
+                    Log.e("errss", s.toString());
+
+
 
                     connection = (HttpURLConnection)url.openConnection();
                     connection.setRequestMethod("GET");
@@ -78,18 +97,20 @@ public class GetRealWeather {
                         response.append(line);
                     }
 
-                    jsonArray = new JSONArray(response.toString());
+                    JSONObject json = new JSONObject(response.toString());
 
+                    jsonArray = json.getJSONArray("HeWeather5");
+                    JSONObject jsonObject;
                     for(int i = 0; i < jsonArray.length(); i++){
 
                         //解决重名
                         if(jsonArray.length() == 1) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            jsonObject = jsonArray.getJSONObject(0);
                         }else {
-                            JSONObject jsonObject = jsonArray.getJSONObject(1);
+                            jsonObject = jsonArray.getJSONObject(1);
                         }
 
-
+                        addMsg(jsonObject);
                     }
 
                     handler();
@@ -104,7 +125,49 @@ public class GetRealWeather {
 
     }
 
-    public void addMsg(JSONObject jsonObject) {
+    public void addMsg(JSONObject jsonObject) throws JSONException {
+
+        Log.e("RealJson", jsonObject.toString());
+
+        JSONObject basic = jsonObject.getJSONObject("basic");
+        String cityname = basic.getString("city");
+        JSONObject update = basic.getJSONObject("update");
+        String time = update.getString("loc");
+
+        JSONObject now = jsonObject.getJSONObject("now");
+
+        JSONObject cond = now.getJSONObject("cond");
+        String code = cond.getString("code");
+        String txt = cond.getString("txt");
+
+        String bodyTmp = now.getString("fl");
+        String xiangDuiShiDu = now.getString("hum");
+        String jiangShuiLiang = now.getString("pcpn");
+        String qiYa = now.getString("pres");
+        String tmp = now.getString("tmp");
+        String nengJianDu = now.getString("vis");
+
+        JSONObject wind = now.getJSONObject("wind");
+        String dir = wind.getString("dir");
+        String windForce = wind.getString("sc");
+        String windSpeed = wind.getString("spd");
+
+
+        realWeatherBean = new RealWeatherBean(
+                cityname,
+                time,
+                code,
+                txt,
+                bodyTmp,
+                xiangDuiShiDu,
+                jiangShuiLiang,
+                qiYa,
+                tmp,
+                nengJianDu,
+                dir,
+                windForce,
+                windSpeed
+        );
 
     }
 

@@ -5,22 +5,22 @@ package com.example.cw.unforeseenstorm.Bean;
  */
 
 public class RealWeatherBean {
-    private String city;
-    private String time;
-    private String code;
-    private String text;
-    private String bodyTmp;
-    private String xianDuiShiDu;
-    private String jiangShuiLiang;
-    private String qiYa;
-    private String tmp;
-    private String nengJianDu;
-    private String windDir;
-    private String windForce;
-    private String windSpeed;
+    public String city;
+    public String time;
+    public String code;
+    public String text;
+    public String bodyTmp;
+    public String xiangDuiShiDu;
+    public String jiangShuiLiang;
+    public String qiYa;
+    public String tmp;
+    public String nengJianDu;
+    public String windDir;
+    public String windForce;
+    public String windSpeed;
 
     public RealWeatherBean(String city, String time, String code
-            , String text, String bodyTmp, String xianDuiShiDu
+            , String text, String bodyTmp, String xiangDuiShiDu
             , String jiangShuiLiang, String qiYa, String tmp
             , String nengJianDu, String windDir, String windForce
             , String windSpeed) {
@@ -29,7 +29,7 @@ public class RealWeatherBean {
         this.code = code;
         this.text = text;
         this.bodyTmp = bodyTmp;
-        this.xianDuiShiDu = xianDuiShiDu;
+        this.xiangDuiShiDu = xiangDuiShiDu;
         this.jiangShuiLiang = jiangShuiLiang;
         this.qiYa = qiYa;
         this.tmp = tmp;
