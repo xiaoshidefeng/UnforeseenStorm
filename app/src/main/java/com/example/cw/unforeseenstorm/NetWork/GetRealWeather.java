@@ -95,8 +95,6 @@ public class GetRealWeather {
                     URL url = new URL(s);
                     Log.e("errss", s.toString());
 
-
-
                     connection = (HttpURLConnection)url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.connect();

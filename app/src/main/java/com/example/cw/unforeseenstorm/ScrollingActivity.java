@@ -12,13 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.example.cw.unforeseenstorm.NetWork.GetHourlyForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
+import com.github.mikephil.charting.charts.LineChart;
 
 public class ScrollingActivity extends AppCompatActivity {
 
@@ -42,19 +45,18 @@ public class ScrollingActivity extends AppCompatActivity {
                     double jindu = amapLocation.getLongitude();
                     //这里是异步获取城市名
                     cityName = amapLocation.getCity();
-
-
+                    tvCity.setText(cityName);
 
                     sharedPreferences = getSharedPreferences("LocationInfo",
                             Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("city", cityName);
-//                    editor.putFloat("weidu", latitude);
-//                    editor.putFloat("jindu", jindu);
 
                     GetRealWeather getRealWeather = new GetRealWeather(cityName, ScrollingActivity.this, weatherImageView, mCollapsingToolbarLayout);
                     getRealWeather.getRealWeather();
 
+                    GetHourlyForecast getHourlyForecast = new GetHourlyForecast(ScrollingActivity.this, hourlyLineChart, cityName);
+                    getHourlyForecast.initEnterprises();
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -74,6 +76,10 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private ImageView weatherImageView;
 
+    private TextView tvCity;
+
+    private LineChart hourlyLineChart;
+
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
 
@@ -89,6 +95,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        tvCity = (TextView) findViewById(R.id.id_TvCity);
+        hourlyLineChart = (LineChart) findViewById(R.id.id_LineChartForeseen);
+
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
