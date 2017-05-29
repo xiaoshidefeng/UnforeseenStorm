@@ -53,7 +53,7 @@ public class GetHourlyForecast {
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if(jsonObject != null){
+            if(jsonObject != null && tmps.length > 1 && times.length > 1){
                 ChartFacede chartFacede = new ChartFacede(times, tmps, GetHourlyForecast.this.lineChart);
                 chartFacede.makeChart();
 
@@ -80,6 +80,8 @@ public class GetHourlyForecast {
                             ConstClass.API_KEY;
 
                     URL url  = new URL(s);
+
+                    Log.e("url", url.toString());
 
                     connection = (HttpURLConnection)url.openConnection();
                     connection.setRequestMethod("GET");
@@ -121,7 +123,7 @@ public class GetHourlyForecast {
         JSONArray jsonArray1 = jsonObject.getJSONArray("HeWeather5");
         JSONObject jsonObject1 = jsonArray1.getJSONObject(0);
 
-        if(jsonObject1.getString("status").equals("ok")) {
+        if(jsonObject1.getString("status").equals("ok") && jsonObject1.has("hourly_forecast")) {
             //返回正常数据
             JSONArray hourly_forecast = jsonObject1.getJSONArray("hourly_forecast");
 

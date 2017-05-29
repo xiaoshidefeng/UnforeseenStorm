@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -57,6 +58,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
                     GetHourlyForecast getHourlyForecast = new GetHourlyForecast(ScrollingActivity.this, hourlyLineChart, cityName);
                     getHourlyForecast.initEnterprises();
+
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -80,6 +82,8 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private LineChart hourlyLineChart;
 
+    private RecyclerView recyclerView;
+
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
 
@@ -97,8 +101,8 @@ public class ScrollingActivity extends AppCompatActivity {
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         tvCity = (TextView) findViewById(R.id.id_TvCity);
         hourlyLineChart = (LineChart) findViewById(R.id.id_LineChartForeseen);
-
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
+//        recyclerView = (RecyclerView) findViewById(R.id.id_RvDayWeather);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +136,8 @@ public class ScrollingActivity extends AppCompatActivity {
         mLocationClient.startLocation();
 
 
+//        getList();
+
     }
 
     @Override
@@ -155,4 +161,9 @@ public class ScrollingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+//    public void getList() {
+//
+//
+//    }
 }

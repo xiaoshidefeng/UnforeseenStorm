@@ -23,7 +23,7 @@ public class ChartFacede {
 
     public void makeChart(){
 
-        if(ChartFacede.this.doubles!=null){
+        if(ChartFacede.this.doubles != null){
             //组件 生成数据
             LineData mLineData = GetLineData.getLineData(ChartFacede.this.doubles);
 
