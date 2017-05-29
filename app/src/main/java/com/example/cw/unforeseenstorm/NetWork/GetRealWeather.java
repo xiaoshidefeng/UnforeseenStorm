@@ -8,8 +8,11 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.cw.unforeseenstorm.Bean.RealWeatherBean;
-import com.example.cw.unforeseenstorm.R;
 import com.example.cw.unforeseenstorm.Tool.ConstClass;
+import com.example.cw.unforeseenstorm.WeatherStrategy.StrategyContext;
+import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Couldy;
+import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Rainy;
+import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Sunny;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +45,10 @@ public class GetRealWeather {
         this.collapsingToolbarLayout = collapsingToolbarLayout;
     }
 
+    /**
+     * 策略模式
+     */
+
     public void handler(){
         handler.sendEmptyMessage(1);//此处发送消息给handler,然后handler接收消息并处理消息进而更新ui
     }
@@ -52,12 +59,24 @@ public class GetRealWeather {
             if(jsonArray != null){
 
                 Log.e("test", realWeatherBean.toString());
-                if(realWeatherBean.text.equals("晴")) {
-                    GetRealWeather.this.imageView.setImageResource(R.mipmap.img_sunny_day);
-                    collapsingToolbarLayout.setTitle("晴  " + realWeatherBean.tmp + "℃");
 
+
+                StrategyContext strategyContext = new StrategyContext();
+
+
+                //策略
+                if(realWeatherBean.text.equals("晴")) {
+                    strategyContext.setWeather(new Sunny());
+
+                }else if(realWeatherBean.text.equals("阴")) {
+                    strategyContext.setWeather(new Couldy());
+
+                }else if(realWeatherBean.text.equals("雨")) {
+                    strategyContext.setWeather(new Rainy());
 
                 }
+                strategyContext.showWeather(GetRealWeather.this.imageView,
+                        GetRealWeather.this.collapsingToolbarLayout, realWeatherBean);
 
             }
 
@@ -114,8 +133,6 @@ public class GetRealWeather {
                     }
 
                     handler();
-
-                    //TODO
 
                 }   catch (Exception e) {
                     Log.e("errss", e.getMessage());
