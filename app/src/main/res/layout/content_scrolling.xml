@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,6 +28,13 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_RvDayWeather"
+            android:layout_width="match_parent"
+            android:layout_height="165dp">
+
+        </android.support.v7.widget.RecyclerView>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,18 +43,14 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"/>
 
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/id_LineChartForeseen"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="200dp"></com.github.mikephil.charting.charts.LineChart>
 
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/id_RvDayWeather"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
 
-        <!--</android.support.v7.widget.RecyclerView>-->
 
     </LinearLayout>
 

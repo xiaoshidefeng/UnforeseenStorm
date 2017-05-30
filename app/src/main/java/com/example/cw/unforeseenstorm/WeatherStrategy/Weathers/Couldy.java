@@ -15,7 +15,7 @@ public class Couldy implements Weather {
 
     @Override
     public void weather(ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout, RealWeatherBean realWeatherBean) {
-        imageView.setImageResource(R.mipmap.img_rainy_day);
+        imageView.setImageResource(R.mipmap.img_couldy_day);
         collapsingToolbarLayout.setTitle(realWeatherBean.text + "  " + realWeatherBean.tmp + "℃");
 
     }

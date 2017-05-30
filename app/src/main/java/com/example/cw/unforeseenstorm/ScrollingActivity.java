@@ -19,6 +19,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.example.cw.unforeseenstorm.NetWork.GetDayForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetHourlyForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
@@ -57,7 +58,10 @@ public class ScrollingActivity extends AppCompatActivity {
                     getRealWeather.getRealWeather();
 
                     GetHourlyForecast getHourlyForecast = new GetHourlyForecast(ScrollingActivity.this, hourlyLineChart, cityName);
-                    getHourlyForecast.initEnterprises();
+                    getHourlyForecast.getHourlyForecast();
+
+                    GetDayForecast getDayForecast = new GetDayForecast(ScrollingActivity.this, cityName, recyclerView);
+                    getDayForecast.getDayForcast();
 
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
@@ -83,6 +87,8 @@ public class ScrollingActivity extends AppCompatActivity {
     private LineChart hourlyLineChart;
 
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
@@ -102,7 +108,7 @@ public class ScrollingActivity extends AppCompatActivity {
         tvCity = (TextView) findViewById(R.id.id_TvCity);
         hourlyLineChart = (LineChart) findViewById(R.id.id_LineChartForeseen);
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
-//        recyclerView = (RecyclerView) findViewById(R.id.id_RvDayWeather);
+        recyclerView = (RecyclerView) findViewById(R.id.id_RvDayWeather);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,7 +169,25 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
 //    public void getList() {
+//        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        adapter = new MyAdapter(getData());
 //
+//        // 设置布局管理器
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
+//        // 设置adapter
+//        recyclerView.setAdapter(adapter);
 //
 //    }
+//
+//    private ArrayList<String> getData() {
+//        ArrayList<String> data = new ArrayList<>();
+//        String temp = " item";
+//        for(int i = 0; i < 20; i++) {
+//            data.add(i + temp);
+//        }
+//
+//        return data;
+//    }
+
 }

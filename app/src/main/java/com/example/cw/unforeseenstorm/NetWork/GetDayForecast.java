@@ -3,11 +3,14 @@ package com.example.cw.unforeseenstorm.NetWork;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.example.cw.unforeseenstorm.Facede.ChartFacede;
+import com.example.cw.unforeseenstorm.Adapter.DayForecastAdapter;
+import com.example.cw.unforeseenstorm.Bean.DayForecastBean;
+import com.example.cw.unforeseenstorm.MyDividerItemDecoration;
 import com.example.cw.unforeseenstorm.Tool.ConstClass;
-import com.github.mikephil.charting.charts.LineChart;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,46 +21,48 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
- * Created by cw on 2017/5/29.
- * 门面模式（外观模式）
+ * Created by cw on 2017/5/30.
  */
 
-public class GetHourlyForecast {
-    public static String[] times;
-
-    public static double[] tmps;
+public class GetDayForecast {
 
     private JSONObject jsonObject;
 
     private Context context;
 
-    private LineChart lineChart;
-
     private String city;
 
-    public GetHourlyForecast(Context context, LineChart lineChart, String city) {
+    private RecyclerView recyclerView;
+
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+    ArrayList<DayForecastBean> dayForecastArrayList = new ArrayList();
+
+    public GetDayForecast(Context context, String city, RecyclerView recyclerView) {
         this.context = context;
-        this.lineChart = lineChart;
         this.city = city;
+        this.recyclerView = recyclerView;
     }
 
-    /**
-     * 功能 更新获取预测天气实时数据ui init
-     * 门面模式
-     */
-    public void handler2(){
+    public void handler3(){
         handler.sendEmptyMessage(1);//此处发送消息给handler,然后handler接收消息并处理消息进而更新ui
     }
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if(jsonObject != null && tmps.length > 1 && times.length > 1){
-                ChartFacede chartFacede = new ChartFacede(times, tmps, GetHourlyForecast.this.lineChart);
-                chartFacede.makeChart();
-
-            }
+//            if(jsonObject != null && !dayForecastArrayList.isEmpty()){
+                layoutManager = new LinearLayoutManager(GetDayForecast.this.context, LinearLayoutManager.HORIZONTAL, false);
+                adapter = new DayForecastAdapter(dayForecastArrayList);
+                // 设置布局管理器
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.addItemDecoration(new MyDividerItemDecoration(GetDayForecast.this.context, LinearLayoutManager.HORIZONTAL));
+                // 设置adapter
+                recyclerView.setAdapter(adapter);
+//            }
 
         }
     };
@@ -67,7 +72,7 @@ public class GetHourlyForecast {
      * 功能 获取预测数据 init
      * 方法 GET
      */
-    public void getHourlyForecast(){
+    public void getDayForcast(){
 
         new Thread(new Runnable() {
             @Override
@@ -75,8 +80,8 @@ public class GetHourlyForecast {
 
                 HttpURLConnection connection = null;
                 try {
-                    String s = ConstClass.API_HOURLY_FORECAST +
-                            GetHourlyForecast.this.city + "&key=" +
+                    String s = ConstClass.API_DAY_FORECAST +
+                            GetDayForecast.this.city + "&key=" +
                             ConstClass.API_KEY;
 
                     URL url  = new URL(s);
@@ -107,7 +112,7 @@ public class GetHourlyForecast {
 
 
                     if(getJson(jsonObject) == 1) {
-                        handler2();
+                        handler3();
                     }
 
 
@@ -122,36 +127,30 @@ public class GetHourlyForecast {
 
         JSONArray jsonArray1 = jsonObject.getJSONArray("HeWeather5");
         JSONObject jsonObject1 = jsonArray1.getJSONObject(0);
-
-        if(jsonObject1.getString("status").equals("ok") && jsonObject1.has("hourly_forecast")) {
+        Log.e("errss", jsonObject1.toString());
+        if(jsonObject1.getString("status").equals("ok") && jsonObject1.has("daily_forecast")) {
             //返回正常数据
-            JSONArray hourly_forecast = jsonObject1.getJSONArray("hourly_forecast");
+            JSONArray hourly_forecast = jsonObject1.getJSONArray("daily_forecast");
 
-            times = new String[hourly_forecast.length()];
-            tmps = new double[hourly_forecast.length()];
-
-            for(int i = 0,count = 0; i < hourly_forecast.length(); i++,count++){
+            for(int i = 0; i < hourly_forecast.length(); i++){
                 JSONObject oneForecast = hourly_forecast.getJSONObject(i);
 
                 JSONObject cond = oneForecast.getJSONObject("cond");
-                String code = cond.getString("code");
-                String txt = cond.getString("txt");
+                String txt_d = cond.getString("txt_d");
 
                 String date = oneForecast.getString("date");
-                String xiangDuiShiDu = oneForecast.getString("hum");
-                String jiangShuiGaiLv = oneForecast.getString("pop");
-                String qiYa = oneForecast.getString("pres");
-                String tmp = oneForecast.getString("tmp");
 
-                JSONObject wind = oneForecast.getJSONObject("wind");
-                String dir = wind.getString("dir");
-                String windForce = wind.getString("sc");
-                String windSpeed = wind.getString("spd");
+                JSONObject tmp = oneForecast.getJSONObject("tmp");
+                Log.e("errss", tmp.toString());
+                String maxTmp = tmp.getString("max");
+                String minTmp = tmp.getString("min");
+                dayForecastArrayList.add(new DayForecastBean(
+                        txt_d,
+                        date,
+                        maxTmp,
+                        minTmp
 
-                times[count] = date.substring(10,date.length()) + " " + txt;
-
-                int a = Integer.parseInt(tmp);
-                tmps[count] = a;
+                ));
             }
 
             return 1;
@@ -160,6 +159,4 @@ public class GetHourlyForecast {
         }
 
     }
-
-
 }
