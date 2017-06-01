@@ -74,7 +74,7 @@ public class GetRealWeather {
                     strategyContext.setWeather(new Rainy());
 
                 }
-                strategyContext.showWeather(GetRealWeather.this.imageView,
+                strategyContext.showWeather(GetRealWeather.this.context, GetRealWeather.this.imageView,
                         GetRealWeather.this.collapsingToolbarLayout, realWeatherBean);
 
             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -117,7 +118,8 @@ public class ScrollingActivity extends AppCompatActivity {
 //            }
 //        });
 
-
+//        toolbar.setPopupTheme();
+//
 
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());

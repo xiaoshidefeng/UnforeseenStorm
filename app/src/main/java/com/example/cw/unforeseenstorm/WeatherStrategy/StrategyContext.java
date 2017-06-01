@@ -1,5 +1,6 @@
 package com.example.cw.unforeseenstorm.WeatherStrategy;
 
+import android.content.Context;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.widget.ImageView;
 
@@ -18,10 +19,12 @@ public class StrategyContext {
         this.weather = weather;
     }
 
-    public void showWeather(ImageView imageView,
+    public Context context;
+
+    public void showWeather(Context context, ImageView imageView,
                             CollapsingToolbarLayout collapsingToolbarLayout,
                             RealWeatherBean realWeatherBean) {
-        weather.weather(imageView, collapsingToolbarLayout, realWeatherBean);
+        weather.weather(context, imageView, collapsingToolbarLayout, realWeatherBean);
 
     }
 }
