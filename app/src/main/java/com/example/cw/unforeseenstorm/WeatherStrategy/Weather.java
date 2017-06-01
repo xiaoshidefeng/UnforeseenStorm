@@ -11,5 +11,6 @@ import com.example.cw.unforeseenstorm.Bean.RealWeatherBean;
  */
 
 public interface Weather {
-    void weather(ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout, RealWeatherBean realWeatherBean);
+    void weather(ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout,
+                 RealWeatherBean realWeatherBean);
 }

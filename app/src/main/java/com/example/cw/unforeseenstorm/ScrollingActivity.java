@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -103,21 +101,21 @@ public class ScrollingActivity extends AppCompatActivity {
         //设置透明状态栏
         SetBarColor.MakeBarTrans(ScrollingActivity.this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         tvCity = (TextView) findViewById(R.id.id_TvCity);
         hourlyLineChart = (LineChart) findViewById(R.id.id_LineChartForeseen);
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
         recyclerView = (RecyclerView) findViewById(R.id.id_RvDayWeather);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                weatherImageView.setImageResource(R.mipmap.img_couldy_day);
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                weatherImageView.setImageResource(R.mipmap.img_couldy_day);
+//
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//            }
+//        });
 
 
 

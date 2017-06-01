@@ -24,11 +24,6 @@ public class DayForecastAdapter extends RecyclerView.Adapter<DayForecastAdapter.
         this.mData = data;
     }
 
-//    public void updateData(ArrayList<DayForecastBean> data) {
-//        this.mData = data;
-//        notifyDataSetChanged();
-//    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 实例化展示的view

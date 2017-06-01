@@ -14,7 +14,8 @@ import com.example.cw.unforeseenstorm.WeatherStrategy.Weather;
 public class Sunny implements Weather {
 
     @Override
-    public void weather(ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout, RealWeatherBean realWeatherBean) {
+    public void weather(ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout,
+                        RealWeatherBean realWeatherBean) {
         imageView.setImageResource(R.mipmap.img_sunny_day);
         collapsingToolbarLayout.setTitle(realWeatherBean.text + "  " + realWeatherBean.tmp + "℃");
 

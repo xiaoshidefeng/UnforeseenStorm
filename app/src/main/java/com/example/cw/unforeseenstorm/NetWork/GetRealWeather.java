@@ -63,7 +63,6 @@ public class GetRealWeather {
 
                 StrategyContext strategyContext = new StrategyContext();
 
-
                 //策略
                 if(realWeatherBean.text.equals("晴")) {
                     strategyContext.setWeather(new Sunny());
@@ -71,7 +70,7 @@ public class GetRealWeather {
                 }else if(realWeatherBean.text.equals("阴") || realWeatherBean.text.equals("多云")) {
                     strategyContext.setWeather(new Couldy());
 
-                }else if(realWeatherBean.text.equals("雨")) {
+                }else {
                     strategyContext.setWeather(new Rainy());
 
                 }

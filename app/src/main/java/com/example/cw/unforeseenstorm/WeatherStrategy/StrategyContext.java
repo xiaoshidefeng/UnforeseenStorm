@@ -13,9 +13,7 @@ import com.example.cw.unforeseenstorm.Bean.RealWeatherBean;
 public class StrategyContext {
 
     private Weather weather;
-//    public StrategyContext() {
-//
-//    }
+
     public void setWeather(Weather weather) {
         this.weather = weather;
     }
