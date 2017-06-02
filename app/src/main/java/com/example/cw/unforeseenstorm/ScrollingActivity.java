@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +20,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.example.cw.unforeseenstorm.NetWork.GetDayForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetHourlyForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
+import com.example.cw.unforeseenstorm.NetWork.GetSuggestion;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
 import com.github.mikephil.charting.charts.LineChart;
 
@@ -62,6 +62,9 @@ public class ScrollingActivity extends AppCompatActivity {
                     GetDayForecast getDayForecast = new GetDayForecast(ScrollingActivity.this, cityName, recyclerView);
                     getDayForecast.getDayForcast();
 
+                    GetSuggestion getSuggestion = new GetSuggestion(ScrollingActivity.this, cityName, recyclerViewvSuggestion);
+                    getSuggestion.getSuggestion();
+
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -86,8 +89,8 @@ public class ScrollingActivity extends AppCompatActivity {
     private LineChart hourlyLineChart;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+
+    private RecyclerView recyclerViewvSuggestion;
 
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
@@ -108,6 +111,7 @@ public class ScrollingActivity extends AppCompatActivity {
         hourlyLineChart = (LineChart) findViewById(R.id.id_LineChartForeseen);
         weatherImageView = (ImageView) findViewById(R.id.id_img_weather);
         recyclerView = (RecyclerView) findViewById(R.id.id_RvDayWeather);
+        recyclerViewvSuggestion = (RecyclerView) findViewById(R.id.id_RvSuggestion);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/id_TvCity"
             android:text="城市"
-            android:textSize="15sp"
+            android:textSize="22sp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"/>
 
@@ -35,22 +35,36 @@
 
         </android.support.v7.widget.RecyclerView>
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="未来几小时天气预测"
-            android:textSize="15sp"
+            android:textSize="22sp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"/>
 
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/id_LineChartForeseen"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="200dp"></com.github.mikephil.charting.charts.LineChart>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="22sp"
+            android:text="生活指数"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_RvSuggestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 
