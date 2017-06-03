@@ -1,7 +1,7 @@
 package com.example.cw.unforeseenstorm;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -28,6 +28,7 @@ import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
 import com.example.cw.unforeseenstorm.NetWork.GetSuggestion;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
 import com.github.mikephil.charting.charts.LineChart;
+import com.zaaach.citypicker.CityPickerActivity;
 
 public class ScrollingActivity extends AppCompatActivity {
 
@@ -51,24 +52,13 @@ public class ScrollingActivity extends AppCompatActivity {
                     double jindu = amapLocation.getLongitude();
                     //这里是异步获取城市名
                     cityName = amapLocation.getCity();
-                    tvCity.setText(cityName);
 
-                    sharedPreferences = getSharedPreferences("LocationInfo",
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("city", cityName);
+//                    sharedPreferences = getSharedPreferences("LocationInfo",
+//                            Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("city", cityName);
 
-                    GetRealWeather getRealWeather = new GetRealWeather(cityName, ScrollingActivity.this, weatherImageView, mCollapsingToolbarLayout);
-                    getRealWeather.getRealWeather();
-
-                    GetHourlyForecast getHourlyForecast = new GetHourlyForecast(ScrollingActivity.this, hourlyLineChart, cityName);
-                    getHourlyForecast.getHourlyForecast();
-
-                    GetDayForecast getDayForecast = new GetDayForecast(ScrollingActivity.this, cityName, recyclerView);
-                    getDayForecast.getDayForcast();
-
-                    GetSuggestion getSuggestion = new GetSuggestion(ScrollingActivity.this, cityName, recyclerViewvSuggestion);
-                    getSuggestion.getSuggestion();
+                    getWeather(cityName);
 
                     Log.e("Amap==经度：纬度", "locationType:"+locationType+",latitude:"+latitude + "经度" + jindu + "城市" + cityName);
                 }else {
@@ -84,6 +74,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
+
+
+    private static final int REQUEST_CODE_PICK_CITY = 0;
 
 
 
@@ -105,14 +98,7 @@ public class ScrollingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
 
-        //SDK在Android 6.0下需要进行运行检测的权限如下：
-//        Manifest.permission.ACCESS_COARSE_LOCATION,
-//        Manifest.permission.ACCESS_FINE_LOCATION,
-//        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//        Manifest.permission.READ_EXTERNAL_STORAGE,
-//        Manifest.permission.READ_PHONE_STATE
-
-        //这里以ACCESS_COARSE_LOCATION为例
+        //这里ACCESS_COARSE_LOCATION申请权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
@@ -189,33 +175,44 @@ public class ScrollingActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            //启动
+            startActivityForResult(new Intent(ScrollingActivity.this, CityPickerActivity.class),
+                    REQUEST_CODE_PICK_CITY);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-//    public void getList() {
-//        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        adapter = new MyAdapter(getData());
-//
-//        // 设置布局管理器
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
-//        // 设置adapter
-//        recyclerView.setAdapter(adapter);
-//
-//    }
-//
-//    private ArrayList<String> getData() {
-//        ArrayList<String> data = new ArrayList<>();
-//        String temp = " item";
-//        for(int i = 0; i < 20; i++) {
-//            data.add(i + temp);
-//        }
-//
-//        return data;
-//    }
+    private void getWeather(String city) {
+
+        tvCity.setText(city);
+
+        GetRealWeather getRealWeather = new GetRealWeather(city, ScrollingActivity.this, weatherImageView, mCollapsingToolbarLayout);
+        getRealWeather.getRealWeather();
+
+        GetHourlyForecast getHourlyForecast = new GetHourlyForecast(ScrollingActivity.this, hourlyLineChart, city);
+        getHourlyForecast.getHourlyForecast();
+
+        GetDayForecast getDayForecast = new GetDayForecast(ScrollingActivity.this, city, recyclerView);
+        getDayForecast.getDayForcast();
+
+        GetSuggestion getSuggestion = new GetSuggestion(ScrollingActivity.this, city, recyclerViewvSuggestion);
+        getSuggestion.getSuggestion();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
+            if (data != null){
+                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                Toast.makeText(this, "当前选择" + city, Toast.LENGTH_LONG).show();
+                getWeather(city);
+//                resultTV.setText("当前选择：" + city);
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -229,5 +226,7 @@ public class ScrollingActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 }
