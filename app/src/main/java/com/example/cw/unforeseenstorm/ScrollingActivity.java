@@ -3,6 +3,7 @@ package com.example.cw.unforeseenstorm;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -26,6 +27,7 @@ import com.example.cw.unforeseenstorm.NetWork.GetDayForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetHourlyForecast;
 import com.example.cw.unforeseenstorm.NetWork.GetRealWeather;
 import com.example.cw.unforeseenstorm.NetWork.GetSuggestion;
+import com.example.cw.unforeseenstorm.NetWork.GetVersion;
 import com.example.cw.unforeseenstorm.Tool.SetBarColor;
 import com.github.mikephil.charting.charts.LineChart;
 import com.zaaach.citypicker.CityPickerActivity;
@@ -97,7 +99,11 @@ public class ScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        //设置透明状态栏
+        SetBarColor.MakeBarTrans(ScrollingActivity.this);
         //这里ACCESS_COARSE_LOCATION申请权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -106,17 +112,27 @@ public class ScrollingActivity extends AppCompatActivity {
                     132);//自定义的code
         }
 
+        try {
+            version();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         init();
 
 
     }
 
-    private void init() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void version() throws PackageManager.NameNotFoundException {
+        PackageManager pm = this.getPackageManager();
+        PackageInfo pi = pm.getPackageInfo(this.getPackageName(), 0);
+        String versionName = pi.versionName;
+        GetVersion toGetVersion = new GetVersion(this, versionName);
+        toGetVersion.getVersion();
+    }
 
-        //设置透明状态栏
-        SetBarColor.MakeBarTrans(ScrollingActivity.this);
+    private void init() {
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
