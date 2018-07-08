@@ -109,7 +109,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    132);//自定义的code
+                    123);//自定义的code
         }
 
         try {
@@ -144,7 +144,7 @@ public class ScrollingActivity extends AppCompatActivity {
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                weatherImageView.setImageResource(R.mipmap.img_couldy_day);
+//                weatherImageView.setImageResource(R.mipmap.img_overcast_day);
 //
 ////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 ////                        .setAction("Action", null).show();

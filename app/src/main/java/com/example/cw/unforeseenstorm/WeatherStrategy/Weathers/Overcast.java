@@ -13,15 +13,15 @@ import com.example.cw.unforeseenstorm.WeatherStrategy.Weather;
  * Created by cw on 2017/5/29.
  */
 
-public class Couldy implements Weather {
+public class Overcast implements Weather {
 
     @Override
     public void weather(Context context, ImageView imageView, CollapsingToolbarLayout collapsingToolbarLayout, RealWeatherBean realWeatherBean) {
-        imageView.setImageResource(R.mipmap.img_cloudy_day);
+        imageView.setImageResource(R.mipmap.img_overcast_day);
         collapsingToolbarLayout.setTitle(realWeatherBean.text + "  " + realWeatherBean.tmp + "℃");
 
         //修改Bar颜色
-        collapsingToolbarLayout.setStatusBarScrimColor(ContextCompat.getColor(context, R.color.colorCould));
-        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(context, R.color.colorCould));
+        collapsingToolbarLayout.setStatusBarScrimColor(ContextCompat.getColor(context, R.color.colorOvercast));
+        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(context, R.color.colorOvercast));
     }
 }

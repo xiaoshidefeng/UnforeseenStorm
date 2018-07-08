@@ -57,11 +57,12 @@ public class GetDayForecast {
 //            if(jsonObject != null && !dayForecastArrayList.isEmpty()){
                 layoutManager = new LinearLayoutManager(GetDayForecast.this.context, LinearLayoutManager.HORIZONTAL, false);
                 adapter = new DayForecastAdapter(dayForecastArrayList);
+                recyclerView.setAdapter(adapter);
                 // 设置布局管理器
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addItemDecoration(new MyDividerItemDecoration(GetDayForecast.this.context, LinearLayoutManager.HORIZONTAL));
                 // 设置adapter
-                recyclerView.setAdapter(adapter);
+
 //            }
 
         }

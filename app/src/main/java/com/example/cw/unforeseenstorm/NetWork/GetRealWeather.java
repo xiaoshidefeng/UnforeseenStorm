@@ -11,6 +11,7 @@ import com.example.cw.unforeseenstorm.Bean.RealWeatherBean;
 import com.example.cw.unforeseenstorm.Tool.ConstClass;
 import com.example.cw.unforeseenstorm.WeatherStrategy.StrategyContext;
 import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Couldy;
+import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Overcast;
 import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Rainy;
 import com.example.cw.unforeseenstorm.WeatherStrategy.Weathers.Sunny;
 
@@ -49,14 +50,15 @@ public class GetRealWeather {
      * 策略模式
      */
 
-    public void handler(){
+    public void handler() {
         handler.sendEmptyMessage(1);//此处发送消息给handler,然后handler接收消息并处理消息进而更新ui
     }
-    public Handler handler = new Handler(){
+
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
-            if(jsonArray != null){
+            if (jsonArray != null) {
 
                 Log.e("test", realWeatherBean.toString());
 
@@ -64,13 +66,15 @@ public class GetRealWeather {
                 StrategyContext strategyContext = new StrategyContext();
 
                 //策略
-                if(realWeatherBean.text.equals("晴")) {
+                if (realWeatherBean.text.equals("晴")) {
                     strategyContext.setWeather(new Sunny());
 
-                }else if(realWeatherBean.text.equals("阴") || realWeatherBean.text.equals("多云")) {
+                } else if (realWeatherBean.text.equals("多云")) {
                     strategyContext.setWeather(new Couldy());
 
-                }else {
+                } else if (realWeatherBean.text.equals("阴")) {
+                    strategyContext.setWeather(new Overcast());
+                } else {
                     strategyContext.setWeather(new Rainy());
 
                 }
@@ -94,7 +98,7 @@ public class GetRealWeather {
                     URL url = new URL(s);
                     Log.e("errss", s.toString());
 
-                    connection = (HttpURLConnection)url.openConnection();
+                    connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.connect();
 
@@ -106,10 +110,10 @@ public class GetRealWeather {
                     InputStream in = connection.getInputStream();
 
                     //对获取的流进行读取
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in,"utf-8"));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
                     final StringBuilder response = new StringBuilder();
-                    String line=null;
-                    while ((line=reader.readLine())!=null){
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
 
@@ -117,12 +121,12 @@ public class GetRealWeather {
 
                     jsonArray = json.getJSONArray("HeWeather5");
                     JSONObject jsonObject;
-                    for(int i = 0; i < jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
                         //解决重名
-                        if(jsonArray.length() == 1) {
+                        if (jsonArray.length() == 1) {
                             jsonObject = jsonArray.getJSONObject(0);
-                        }else {
+                        } else {
                             jsonObject = jsonArray.getJSONObject(1);
                         }
 
@@ -131,7 +135,7 @@ public class GetRealWeather {
 
                     handler();
 
-                }   catch (Exception e) {
+                } catch (Exception e) {
                     Log.e("errss", e.getMessage());
                 }
             }
